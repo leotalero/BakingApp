@@ -2,6 +2,7 @@ package com.android.leonardotalero.bakingapp.Utilities;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import com.android.leonardotalero.bakingapp.data.BakingContract;
 import com.android.leonardotalero.bakingapp.objects.Ingredient;
@@ -50,6 +51,7 @@ public class JsonUtils {
         private static final String OWM_SERVINGS = "servings";
 
          private static final String OWM_IMAGE = "image";
+        private static   ArrayList<Recipe> resultRecipes=new ArrayList<Recipe>();
 
         /**
          * This method parses JSON from a web response and returns an array of Strings
@@ -217,5 +219,69 @@ public class JsonUtils {
 
         return stepsFinal;
     }
+
+
+    public static ArrayList<Recipe> listToArrayRecipe(List<Recipe> list) {
+        //resultMovies= new ArrayList<MovieClass>();
+        resultRecipes.addAll(list);
+        return  resultRecipes;
     }
+    public static ArrayList<Ingredient> listToArrayIngredient(List<Ingredient> list) {
+        //resultMovies= new ArrayList<MovieClass>();
+        ArrayList<Ingredient> result=new ArrayList<Ingredient>();
+        result.addAll(list);
+        return  result;
+    }
+    public static ArrayList<Step> listToArrayStep(List<Step> list) {
+        //resultMovies= new ArrayList<MovieClass>();
+        ArrayList<Step> result=new ArrayList<Step>();
+        result.addAll(list);
+        return  result;
+    }
+
+
+
+
+    public static List<Recipe> cursorToList(Cursor data) {
+
+       List<Recipe> mRecipe=new ArrayList<>();
+        if(data ==null){
+            return mRecipe;
+        }
+        int date=data.getColumnIndex(BakingContract.BakingEntry.COLUMN_DATE);
+        int id=data.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_ID);
+        int name=data.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_NAME);
+        int image=data.getColumnIndex(BakingContract.BakingEntry.COLUMN_IMAGE);
+        int ingredients=data.getColumnIndex(BakingContract.BakingEntry.COLUMN_INGREDIENTS);
+        int steps=data.getColumnIndex(BakingContract.BakingEntry.COLUMN_STEPS);
+        int servings=data.getColumnIndex(BakingContract.BakingEntry.COLUMN_SERVINGS);
+
+        if (data.moveToFirst()){
+            while(!data.isAfterLast()){
+                String mDate = data.getString(date);
+                int  mId= data.getInt(id);
+                String mName = data.getString(name);
+                String mIngredients=data.getString(ingredients);
+                List<Ingredient> listIngredients = JsonUtils.jsonToIngredientsList(mIngredients);
+                List<Step> mSteps=JsonUtils.jsonToStepList(data.getString(steps));
+                String mServings=data.getString(servings);
+                String mImage=data.getString(image);
+
+                // do what ever you want here
+                Recipe recipe=new Recipe(mId,mName,listIngredients,mSteps,mServings,mImage);
+
+                mRecipe.add(recipe);
+
+                data.moveToNext();
+            }
+        }
+        //data.close();
+
+        return mRecipe;
+
+    }
+
+}
+
+
 

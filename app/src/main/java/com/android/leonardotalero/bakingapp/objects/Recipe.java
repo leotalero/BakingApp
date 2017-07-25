@@ -23,6 +23,15 @@ public class Recipe implements Parcelable {
     public Recipe() {
     }
 
+    public Recipe(int mId, String mName, List<Ingredient> mIngredients, List<Step> mSteps, String mServings, String mImage) {
+        this.mId = mId;
+        this.mName = mName;
+        this.mIngredients = mIngredients;
+        this.mSteps = mSteps;
+        this.mServings = mServings;
+        this.mImage = mImage;
+    }
+
     @Override
     public int describeContents() {
         return 0;

@@ -5,4 +5,24 @@
     <string name="content_authority">com.android.leonardotalero.bakingapp</string>
     <string name="no_data">There is no data</string>
     <string name="notification">new Recipe:</string>
+
+    <string name="pref_enable_notifications_key" translatable="false">enable_notifications</string>
+    <string name="pref_enable_notifications_label">Weather Notifications</string>
+
+    <string name="pref_enable_notifications_true">Enabled</string>
+    <string name="pref_enable_notifications_false">Not Enabled</string>
+    <string name="title_step_list">Steps</string>
+    <string name="title_step_detail">Step Detail</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="ingredient_label">Ingredient</string>
+    <string name="quantity_label">Quantity</string>
+    <string name="measure_label">Meassure</string>
+    <string name="cantidad">total</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="pause">Stop</string>
+    <string name="play">Play</string>
+    <string name="restart">Restart</string>
+    <string name="guess">Guess</string>
+    <string name="notification_text">Notification</string>
 </resources>

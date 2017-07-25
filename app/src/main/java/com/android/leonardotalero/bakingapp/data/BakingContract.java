@@ -30,7 +30,7 @@ public class BakingContract {
         /* Used internally as the name of our Recipe table. */
         public static final String TABLE_NAME = "recipe";
         public static final String COLUMN_DATE = "date";
-        public static final String COLUMN_RECIPE_ID = "Recipe_id";
+        public static final String COLUMN_RECIPE_ID = "recipe_id";
         public static final String COLUMN_RECIPE_NAME = "name";
         public static final String COLUMN_INGREDIENTS= "ingredients";
         public static final String COLUMN_STEPS = "steps";

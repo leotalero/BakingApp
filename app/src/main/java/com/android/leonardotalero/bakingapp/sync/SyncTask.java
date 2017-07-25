@@ -9,6 +9,7 @@ import com.android.leonardotalero.bakingapp.Utilities.JsonUtils;
 import com.android.leonardotalero.bakingapp.Utilities.NetworkUtils;
 import com.android.leonardotalero.bakingapp.Utilities.NotificationUtils;
 import com.android.leonardotalero.bakingapp.data.BakingContract;
+import com.android.leonardotalero.bakingapp.data.BakingPreferences;
 
 import java.net.URL;
 
@@ -71,7 +72,7 @@ public class SyncTask {
                  * we should notify the user that the weather has been refreshed.
                  */
 
-                  //  boolean notificationsEnabled = SunshinePreferences.areNotificationsEnabled(context);
+                    boolean notificationsEnabled = BakingPreferences.areNotificationsEnabled(context);
 
                 /*
                  * If the last notification was shown was more than 1 day ago, we want to send
@@ -93,12 +94,12 @@ public class SyncTask {
                  * We only want to show the notification if the user wants them shown and we
                  * haven't shown a notification in the past day.
                  */
-                /*
-                    if (notificationsEnabled && oneDayPassedSinceLastNotification) {
+/*
+                    if (notificationsEnabled) {
                         NotificationUtils.notifyUserOfNewWeather(context);
                     }
+*/
 
-                 */
 
             /* If the code reaches this point, we have successfully performed our sync */
 

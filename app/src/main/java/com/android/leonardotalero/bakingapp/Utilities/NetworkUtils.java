@@ -83,8 +83,8 @@ public class NetworkUtils {
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
-            urlConnection.setConnectTimeout(5000);
-            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(20000);
+            urlConnection.setReadTimeout(30000);
             InputStream in = urlConnection.getInputStream();
 
             Scanner scanner = new Scanner(in);

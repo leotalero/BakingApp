@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/selector">
+
+    <ImageView
+        android:id="@+id/result_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="6dip"
+        android:src="@mipmap/ic_pour"/>
+    <TextView
+        android:id="@+id/in_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/result_icon"
+        android:layout_alignParentRight="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:gravity="center_vertical"
+        android:text="name" />
+    <TextView
+        android:id="@+id/in_quantity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/in_name"
+        android:layout_toRightOf="@id/result_icon"
+        android:layout_alignParentRight="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:gravity="center_vertical"
+        android:text="quantity"
+        />
+
+    <TextView
+        android:id="@+id/in_measure"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/in_quantity"
+        android:layout_toRightOf="@id/result_icon"
+        android:ellipsize="marquee"
+        android:singleLine="false"
+        android:text="measure"
+        tools:text='Again, please remember to remove your API key before you submit through GitHub. Be sure to review it thoroughly before you submit. All criteria must "meet specifications" in order to pass.' />
+</RelativeLayout>

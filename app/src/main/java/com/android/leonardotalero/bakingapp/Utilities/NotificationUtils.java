@@ -13,8 +13,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 
+import com.android.leonardotalero.bakingapp.MainActivity;
 import com.android.leonardotalero.bakingapp.R;
-import com.android.leonardotalero.bakingapp.RecipeDetailActivity;
 import com.android.leonardotalero.bakingapp.data.BakingContract;
 
 /**
@@ -125,7 +125,7 @@ public class NotificationUtils {
              * This Intent will be triggered when the user clicks the notification. In our case,
              * we want to open Sunshine to the DetailActivity to display the newly updated weather.
              */
-            Intent detailIntentForToday = new Intent(context, RecipeDetailActivity.class);
+            Intent detailIntentForToday = new Intent(context, MainActivity.class);
             detailIntentForToday.setData(dataUri);
 
             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
