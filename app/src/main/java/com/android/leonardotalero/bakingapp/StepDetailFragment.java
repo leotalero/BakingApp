@@ -1,5 +1,6 @@
 package com.android.leonardotalero.bakingapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.leonardotalero.bakingapp.Utilities.JsonUtils;
 import com.android.leonardotalero.bakingapp.objects.Ingredient;
 import com.android.leonardotalero.bakingapp.objects.Step;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -61,7 +63,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
  * in two-pane mode (on tablets) or a {@link StepDetailActivity}
  * on handsets.
  */
-public class StepDetailFragment extends Fragment  implements   ExoPlayer.EventListener {
+public class StepDetailFragment extends Fragment  implements ExoPlayer.EventListener {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -94,6 +96,19 @@ public class StepDetailFragment extends Fragment  implements   ExoPlayer.EventLi
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
+
+
+
+
+
+    public static StepDetailFragment newInstance(int columnCount,Step mStep) {
+        StepDetailFragment fragment = new StepDetailFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_ITEM_STEP, mStep);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public StepDetailFragment() {
 
     }
@@ -102,17 +117,7 @@ public class StepDetailFragment extends Fragment  implements   ExoPlayer.EventLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         c = getContext();
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            /*arguments.putString(StepDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(StepDetailFragment.ARG_ITEM_ID));
-            arguments.putParcelableArrayList(StepDetailFragment.ARG_ITEM_INGREDIENT,
-                    getIntent().getParcelableArrayListExtra(StepDetailFragment.ARG_ITEM_INGREDIENT));
-            arguments.putParcelable(StepDetailFragment.ARG_ITEM_STEP,
-                    getIntent().getParcelableExtra(StepDetailFragment.ARG_ITEM_STEP));
-            */
+        if (getArguments()!=null) {
             mId = getArguments().getString(ARG_ITEM_ID);
             mIngredients = getArguments().getParcelableArrayList(ARG_ITEM_INGREDIENT);
             mItem = getArguments().getParcelable(ARG_ITEM_STEP);
@@ -120,9 +125,9 @@ public class StepDetailFragment extends Fragment  implements   ExoPlayer.EventLi
 
 
             bandwidthMeter = new DefaultBandwidthMeter();
-            mediaDataSourceFactory = new DefaultDataSourceFactory(c, Util.getUserAgent(c, "mediaPlayerSample"), (TransferListener<? super DataSource>) bandwidthMeter);
+            mediaDataSourceFactory = new DefaultDataSourceFactory(c, Util.getUserAgent(c, "mediaPlayerSample"),
+                    (TransferListener<? super DataSource>) bandwidthMeter);
             window = new Timeline.Window();
-
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
@@ -136,16 +141,19 @@ public class StepDetailFragment extends Fragment  implements   ExoPlayer.EventLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         View rootView = inflater.inflate(R.layout.step_detail_step, container, false);
+
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.playerView);
 
-        // Show the dummy content as text in a TextView.
+
         if (mItem != null) {
-            //((TextView) rootView.findViewById(R.id.textView_detail_step)).setText(mItem.sDescription);
+            ((TextView) rootView.findViewById(R.id.textView_detail_step)).setText(mItem.sDescription);
 
         }
         initializeMediaSession();
-        initializePlayer(Uri.parse(mItem.sVideoUrl));
+       initializePlayer(Uri.parse(mItem.sVideoUrl));
 
         return rootView;
     }
@@ -260,8 +268,8 @@ public class StepDetailFragment extends Fragment  implements   ExoPlayer.EventLi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        releasePlayer();
-        mMediaSession.setActive(false);
+        /*releasePlayer();
+        mMediaSession.setActive(false);*/
     }
 
     @Override
@@ -289,7 +297,7 @@ public class StepDetailFragment extends Fragment  implements   ExoPlayer.EventLi
                     mExoPlayer.getCurrentPosition(), 1f);
         }
         mMediaSession.setPlaybackState(mStateBuilder.build());
-        showNotification(mStateBuilder.build());
+        //showNotification(mStateBuilder.build());
 
     }
 

@@ -22,7 +22,9 @@
                     android:id="@+id/thumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/album_cover_height"
-                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_alignParentEnd="true"
+                    android:alpha="0.3"
+                    android:background="@drawable/recipe"
                     android:clickable="true"
                     android:scaleType="fitXY" />
 
@@ -34,8 +36,10 @@
                     android:paddingLeft="@dimen/album_title_padding"
                     android:paddingRight="@dimen/album_title_padding"
                     android:paddingTop="@dimen/album_title_padding"
+                    android:text="ejemplo"
                     android:textColor="@color/album_title"
-                    android:textSize="@dimen/album_title" />
+                    android:textSize="@dimen/album_title"
+                    android:background="@color/colorAccent"/>
 
                 <TextView
                     android:id="@+id/count"
@@ -45,7 +49,9 @@
                     android:paddingBottom="@dimen/songs_count_padding_bottom"
                     android:paddingLeft="@dimen/album_title_padding"
                     android:paddingRight="@dimen/album_title_padding"
-                    android:textSize="@dimen/songs_count" />
+                    android:textSize="@dimen/songs_count"
+                    android:textColor="@color/album_title"
+                    android:background="@color/colorAccent"/>
 
                 <ImageView
                     android:id="@+id/overflow"
@@ -54,7 +60,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@id/thumbnail"
                     android:layout_marginTop="@dimen/ic_album_overflow_margin_top"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/ic_action_name" />
 
             </RelativeLayout>

@@ -32,7 +32,7 @@ public class NetworkUtils {
     final static String API_KEY= (BuildConfig.THE_MOVIE_DB_API_TOKEN);
     final static String BASE_URL =
             "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
-    final static  String BASE_URL_IMAGE="http://image.tmdb.org/t/p/w342/";
+    //final static  String BASE_URL_IMAGE="http://image.tmdb.org/t/p/w342/";
 
     final static String PARAM_API= "api_key";
     final static String PARAM_LANGUAGE="language";
@@ -61,11 +61,12 @@ public class NetworkUtils {
 
 
 
-    public static URL buildUrlImage(String idposter) {
+    public static URL buildUrlImage(String urlImage) {
 
-        Uri builtUri = Uri.parse(BASE_URL_IMAGE+idposter)
+        Uri builtUri = Uri.parse(urlImage)
                 .buildUpon()
                 .build();
+
 
         URL url = null;
         try {

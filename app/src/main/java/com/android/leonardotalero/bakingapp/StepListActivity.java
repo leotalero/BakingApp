@@ -19,11 +19,13 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 import com.android.leonardotalero.bakingapp.Utilities.JsonUtils;
-import com.android.leonardotalero.bakingapp.dummy.DummyContent;
+import com.android.leonardotalero.bakingapp.Utilities.NetworkUtils;
 import com.android.leonardotalero.bakingapp.objects.Ingredient;
 import com.android.leonardotalero.bakingapp.objects.Recipe;
 import com.android.leonardotalero.bakingapp.objects.Step;
+import com.squareup.picasso.Picasso;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,11 +53,13 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
     private String DESC_STEP_INGREDIENT="";
     private String RECIPE_OBJECT="recipe";
     private SimpleItemRecyclerViewAdapter mAdapter;
+    public Context c;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        c=this;
         setContentView(R.layout.activity_step_list);
         DESC_STEP_INGREDIENT=getString(R.string.ingredients);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -128,7 +132,7 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Step> steps) {
         mStep=steps;
-        mAdapter=new SimpleItemRecyclerViewAdapter(mStep);
+        mAdapter=new SimpleItemRecyclerViewAdapter(mStep,c);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -137,14 +141,21 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
 
     }
 
+
+
+
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final List<Step> mValues;
+        private Context mContex;
 
-        public SimpleItemRecyclerViewAdapter(List<Step> items) {
+        public SimpleItemRecyclerViewAdapter(List<Step> items,@NonNull Context mContext) {
+            this.mContex=mContext;
             mValues = items;
         }
+
+
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -155,33 +166,72 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+
             holder.mItem = mValues.get(position);
             holder.title.setText(mValues.get(position).sShortDescription);
            // holder..setText(mValues.get(position).content);
+            String url_path = mValues.get(position).sThumbnailURL;
+
+            if (url_path==null || url_path.equals("")){
+
+                if((holder.mItem.sId)==ID_STEP_INGREDIENT) {
+                    //  url_path="https://www.google.com/imgres?imgurl=http%3A%2F%2Fwww.candyindustry.com%2Fext%2Fresources%2Fissues%2F2015-June%2FCIN_IngTech_0615_feature.jpg%3F1435000230&imgrefurl=http%3A%2F%2Fwww.candyindustry.com%2Farticles%2F86802-tracking-confectionery-ingredient-trends&docid=mdzwjrlOXyyOMM&tbnid=HWZPLpMP-dQ5kM%3A&vet=10ahUKEwi69oGu-qzVAhVEaD4KHVrAC0oQMwglKAAwAA..i&w=900&h=550&client=safari&bih=661&biw=1240&q=image%20ingredient&ved=0ahUKEwi69oGu-qzVAhVEaD4KHVrAC0oQMwglKAAwAA&iact=mrc&uact=8"; }
+                    url_path = "https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwjYmfGs6KzVAhXFCD4KHYqzCIoQjRwIBw&url=https%3A%2F%2Fpixabay.com%2Fen%2Frecipe-label-icon-symbol-spoon-575434%2F&psig=AFQjCNGn3pJgdYIAK5Dj7QODic4BNczlyg&ust=1501360094865522";
+
+                } else{
+                    url_path="https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwieysKZ96zVAhUNfiYKHcbhCOgQjRwIBw&url=https%3A%2F%2Fthenounproject.com%2Fterm%2Fsteps%2F187775%2F&psig=AFQjCNH-SWQX8bBta4AZpvHbiKtCn2XxcA&ust=1501364077976036";
+                }
+            }else{
+
+            }
+            //URL url = NetworkUtils.buildUrlImage(url_path);
+            URL url = NetworkUtils.buildUrlImage(url_path);
+
+            Picasso.with(mContex).load(url.toString())
+                    .placeholder(R.drawable.default_image)
+                    .error(R.drawable.default_image)
+                    .into(holder.thumbnail);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                    int id=holder.itemView.getId();
                     if (mTwoPane) {
-                        Bundle arguments = new Bundle();
-                        arguments.putParcelableArrayList(StepDetailFragment.ARG_ITEM_INGREDIENT, JsonUtils.listToArrayIngredient(mIngredients));
-                        arguments.putString(StepDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.sId));
-                        arguments.putParcelable(StepDetailFragment.ARG_ITEM_STEP, holder.mItem);
-                        arguments.putParcelable(StepDetailFragment.ARG_ITEM, mRecipe);
-                        StepDetailFragment fragment = new StepDetailFragment();
-                        fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.step_detail_container, fragment)
-                                .commit();
+
+
+                        if((holder.mItem.sId)==ID_STEP_INGREDIENT){
+
+                            IngredientFragment fragment = new IngredientFragment().newInstance(1,mIngredients);
+                            //fragment.setArguments(arguments);
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.step_detail_container, fragment)
+                                    .commit();
+
+
+                        }else{
+                            StepDetailFragment fragment = new StepDetailFragment().newInstance(1,holder.mItem);
+/*
+                            Bundle arguments = new Bundle();
+                            arguments.putParcelableArrayList(StepDetailFragment.ARG_ITEM_INGREDIENT, JsonUtils.listToArrayIngredient(mIngredients));
+                            arguments.putString(StepDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.sId));
+                            arguments.putParcelable(StepDetailFragment.ARG_ITEM_STEP, holder.mItem);
+                            arguments.putParcelable(StepDetailFragment.ARG_ITEM, mRecipe);
+*/
+
+                            //fragment.setArguments(arguments);
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.step_detail_container, fragment)
+                                    .commit();
+                        }
+
                     } else {
-                        Context context = v.getContext();
-                        Intent intent = new Intent(context, StepDetailActivity.class);
+                        c = v.getContext();
+                        Intent intent = new Intent(c, StepDetailActivity.class);
                         intent.putExtra(StepDetailFragment.ARG_ITEM_INGREDIENT, JsonUtils.listToArrayIngredient(mIngredients));
                         intent.putExtra(StepDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.sId));
                         intent.putExtra(StepDetailFragment.ARG_ITEM_STEP, holder.mItem);
                         intent.putExtra(StepDetailFragment.ARG_ITEM, mRecipe);
-                        context.startActivity(intent);
+                        c.startActivity(intent);
                     }
                 }
             });

@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements
 
         }
         loadData();
-       getSupportLoaderManager().initLoader(ID_RECIPE_LOADER, null, this);
+        getSupportLoaderManager().initLoader(ID_RECIPE_LOADER, null, this);
         SyncUtils.initialize(this);
         // MainFragmentLoad();
 
