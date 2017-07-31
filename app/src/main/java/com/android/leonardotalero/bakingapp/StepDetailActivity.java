@@ -49,10 +49,13 @@ import java.util.List;
 public class StepDetailActivity extends AppCompatActivity implements IngredientFragment.OnListFragmentInteractionListener {
 
     private String RECIPE_OBJECT="recipe";
+    private String ARG_ITEM_INGREDIENT="ingredient-list";
+    private String  ARG_ITEM_ID="mid";
     private Recipe mRecipe;
     private String mId;
     private int ID_STEP_INGREDIENT=990;
     private List<Ingredient> mIngredients;
+    private Bundle arguments;
 
 
     @Override
@@ -94,7 +97,8 @@ public class StepDetailActivity extends AppCompatActivity implements IngredientF
             intent.putExtra(StepDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.sId));
             intent.putExtra(StepDetailFragment.ARG_ITEM_STEP, holder.mItem);
        */
-            Bundle arguments = new Bundle();
+
+            arguments = new Bundle();
             arguments.putString(StepDetailFragment.ARG_ITEM_ID,
                     getIntent().getStringExtra(StepDetailFragment.ARG_ITEM_ID));
             arguments.putParcelableArrayList(StepDetailFragment.ARG_ITEM_INGREDIENT,
@@ -107,30 +111,46 @@ public class StepDetailActivity extends AppCompatActivity implements IngredientF
             mIngredients=getIntent().getParcelableArrayListExtra(StepDetailFragment.ARG_ITEM_INGREDIENT);
 
             mId=getIntent().getStringExtra(StepDetailFragment.ARG_ITEM_ID);
-            if(Integer.valueOf(mId)==ID_STEP_INGREDIENT){
-                //ingredients_show list
 
-                IngredientFragment fragment = new IngredientFragment().newInstance(1,mIngredients);
-                //fragment.setArguments(arguments);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.step_detail_container, fragment)
-                        .commit();
+            gotoFragment();
 
-            }else{
-                //steps_show_ video and detailss
-                StepDetailFragment fragment = new StepDetailFragment();
-                fragment.setArguments(arguments);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.step_detail_container, fragment)
-                        .commit();
+        }else{
 
 
-            }
+            mRecipe=savedInstanceState.getParcelable(RECIPE_OBJECT);
+            mIngredients=savedInstanceState.getParcelableArrayList(ARG_ITEM_INGREDIENT);
+            mId=savedInstanceState.getString(ARG_ITEM_ID);
+            arguments=savedInstanceState.getParcelable("arguments");
+            gotoFragment();
+        }
+    }
 
 
+    public void gotoFragment(){
+
+        if(Integer.valueOf(mId)==ID_STEP_INGREDIENT){
+            //ingredients_show list
+
+            IngredientFragment fragment = new IngredientFragment().newInstance(1,mIngredients);
+            //fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.step_detail_container, fragment)
+                    .commit();
+
+        }else{
+            //steps_show_ video and detailss
+            StepDetailFragment fragment = new StepDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.step_detail_container, fragment)
+                    .commit();
 
 
         }
+
+
+
+
     }
 
     @Override
@@ -165,7 +185,13 @@ public class StepDetailActivity extends AppCompatActivity implements IngredientF
     }
 
 
-
-
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(RECIPE_OBJECT,mRecipe);
+        //outState.putParcelable(ARG_ITEM_INGREDIENT,mIngredients);
+        outState.putParcelableArrayList(ARG_ITEM_INGREDIENT,JsonUtils.listToArrayIngredient(mRecipe.mIngredients));
+        outState.putString(ARG_ITEM_ID,mId);
+        outState.putParcelable("arguments",arguments);
+        super.onSaveInstanceState(outState);
+    }
 }

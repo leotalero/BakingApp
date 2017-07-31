@@ -7,6 +7,13 @@
     android:background="@drawable/selector">
 
 
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/playerView"
+            app:controller_layout_id="@layout/exo_playback_control_view3">
+        </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+
     <TextView
         android:id="@+id/textView_detail_step"
         android:layout_width="match_parent"
@@ -14,15 +21,10 @@
         android:gravity="center"
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
-        android:text="test"
+        android:text=""
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         android:textSize="18sp" />
-
-        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/playerView"
-            >
-        </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
 
 </LinearLayout>
 

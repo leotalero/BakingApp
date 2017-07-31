@@ -104,8 +104,7 @@ public class RecipeRecyclerAdapter extends   RecyclerView.Adapter<RecipeRecycler
                     Recipe recipe=mRecipes.get(position);
                     intentToStartDetailActivity.putExtra(RECIPE_OBJECT , recipe);
                     mContext.startActivity(intentToStartDetailActivity);
-                Toast.makeText(mContext,
-                            R.string.no_data, Toast.LENGTH_LONG).show();
+
                 }
             });
         }

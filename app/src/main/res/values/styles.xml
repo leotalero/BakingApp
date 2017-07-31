@@ -16,4 +16,7 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <style name="ExoMediaButton.fullscreen">
+    <item name="android:contentDescription">@string/exo_controls_next_description</item>
+    </style>
 </resources>

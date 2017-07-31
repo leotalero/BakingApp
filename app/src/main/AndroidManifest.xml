@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="true">
         <activity
             android:name=".MainActivity"
             android:label="@string/title_recipe_Main"
@@ -48,6 +49,17 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.android.leonardotalero.bakingapp.StepListActivity" />
+        </activity>
+
+        <activity
+            android:name=".VideoFullScreen"
+            android:label="@string/title_step_detail"
+            android:parentActivityName=".StepDetailActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.android.leonardotalero.bakingapp.StepDetailActivity" />
         </activity>
 
         <receiver android:name=".BakingAppWidget">

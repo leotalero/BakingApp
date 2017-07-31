@@ -4,6 +4,7 @@
     <string name="title_recipe_detail">Recipe Detail</string>
     <string name="content_authority">com.android.leonardotalero.bakingapp</string>
     <string name="no_data">There is no data</string>
+    <string name="no_video">There is no video available</string>
     <string name="notification">new Recipe:</string>
 
     <string name="pref_enable_notifications_key" translatable="false">enable_notifications</string>
@@ -13,6 +14,7 @@
     <string name="pref_enable_notifications_false">Not Enabled</string>
     <string name="title_step_list">Steps</string>
     <string name="title_step_detail">Step Detail</string>
+    <string name="title_videoFull">Video Full</string>
     <string name="ingredients">Ingredients</string>
     <string name="ingredient_label">Ingredient</string>
     <string name="quantity_label">Quantity</string>

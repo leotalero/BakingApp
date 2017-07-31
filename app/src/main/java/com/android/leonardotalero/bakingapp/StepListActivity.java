@@ -105,6 +105,8 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
                 Step step=new Step(ID_STEP_INGREDIENT,DESC_STEP_INGREDIENT,DESC_STEP_INGREDIENT,"","");
                 mStep.add(step);
                 mStep.addAll(mRecipe.mSteps);
+            }else{
+
             }
         }
 
@@ -210,16 +212,7 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
 
                         }else{
                             StepDetailFragment fragment = new StepDetailFragment().newInstance(1,holder.mItem);
-/*
-                            Bundle arguments = new Bundle();
-                            arguments.putParcelableArrayList(StepDetailFragment.ARG_ITEM_INGREDIENT, JsonUtils.listToArrayIngredient(mIngredients));
-                            arguments.putString(StepDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.sId));
-                            arguments.putParcelable(StepDetailFragment.ARG_ITEM_STEP, holder.mItem);
-                            arguments.putParcelable(StepDetailFragment.ARG_ITEM, mRecipe);
-*/
-
-                            //fragment.setArguments(arguments);
-                            getSupportFragmentManager().beginTransaction()
+                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.step_detail_container, fragment)
                                     .commit();
                         }
