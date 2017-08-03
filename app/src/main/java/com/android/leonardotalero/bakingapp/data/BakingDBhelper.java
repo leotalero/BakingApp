@@ -19,7 +19,7 @@ public class BakingDBhelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "baking.db";
 
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 10;
 
     public BakingDBhelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

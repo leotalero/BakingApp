@@ -36,4 +36,20 @@ public class BakingPreferences {
         return shouldDisplayNotifications;
     }
 
+    public static Integer areRecipeFavorite(Context context) {
+        /* Key for accessing the preference for showing notifications */
+        String favorite_key = context.getString(R.string.pref_favorite);
+
+
+
+        /* As usual, we use the default SharedPreferences to access the user's preferences */
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        /* If a value is stored with the key, we extract it here. If not, use a default. */
+        int id = sp
+                .getInt(favorite_key,0);
+
+        return id;
+    }
+
 }

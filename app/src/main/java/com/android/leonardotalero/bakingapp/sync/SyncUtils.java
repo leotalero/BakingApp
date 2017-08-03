@@ -62,7 +62,7 @@ public class SyncUtils {
                  * row. In our queries where we display data, we need to PROJECT more columns
                  * to determine what weather details need to be displayed.
                  */
-                String[] projectionColumns = {BakingContract.BakingEntry._ID};
+                String[] projectionColumns = {BakingContract.BakingEntry.COLUMN_RECIPE_ID};
                 String selectionStatement = null;
 
                 /* Here, we perform the query to check to see if we have any weather data */
@@ -86,7 +86,7 @@ public class SyncUtils {
                  * If the Cursor was null OR if it was empty, we need to sync immediately to
                  * be able to display data to the user.
                  */
-                if (null == cursor || cursor.getCount() == 0) {
+                if (null == cursor || cursor.getCount() == 0 || cursor.getCount() == 1) {
                     startImmediateSync(context);
                 }
 

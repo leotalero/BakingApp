@@ -121,9 +121,19 @@ public class RecipeRecyclerAdapter extends   RecyclerView.Adapter<RecipeRecycler
         }
 
     void swapCursor(Cursor newCursor) {
+        //mCursor = newCursor;
+        //notifyDataSetChanged();
+        //mRecipes=JsonUtils.cursorToList(mCursor);
+
+        if (mCursor != null) {
+            mCursor.close();
+        }
         mCursor = newCursor;
-        notifyDataSetChanged();
-        mRecipes=JsonUtils.cursorToList(mCursor);
+        if (mCursor != null) {
+            // Force the RecyclerView to refresh
+            mRecipes=JsonUtils.cursorToList(mCursor);
+            this.notifyDataSetChanged();
+        }
     }
 
 

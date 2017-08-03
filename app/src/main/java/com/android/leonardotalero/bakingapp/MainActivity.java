@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity implements
 
         }
         loadData();
-        getSupportLoaderManager().initLoader(ID_RECIPE_LOADER, null, this);
+
         SyncUtils.initialize(this);
-        // MainFragmentLoad();
+        getSupportLoaderManager().initLoader(ID_RECIPE_LOADER, null, this);
 
 
     }
@@ -142,12 +142,13 @@ public class MainActivity extends AppCompatActivity implements
 
                 String selection = null;
 
-                return new CursorLoader(this,
+                CursorLoader cursorLoader = new CursorLoader(this,
                         forecastQueryUri,
                         ALL_DATA,
                         selection,
                         null,
                         sortOrder);
+                return cursorLoader;
 
             default:
                 throw new RuntimeException("Loader Not Implemented: " + id);

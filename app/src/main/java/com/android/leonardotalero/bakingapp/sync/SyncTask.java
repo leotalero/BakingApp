@@ -63,7 +63,7 @@ public class SyncTask {
                             null);
 
                 /* Insert our new weather data into Sunshine's ContentProvider */
-                    contentResolver.bulkInsert(
+                    int data = contentResolver.bulkInsert(
                             BakingContract.BakingEntry.CONTENT_URI,
                             weatherValues);
 
@@ -80,25 +80,25 @@ public class SyncTask {
                  * it's important that you shouldn't spam your users with notifications.
                  */
 
-                  /*  long timeSinceLastNotification = SunshinePreferences
-                            .getEllapsedTimeSinceLastNotification(context);
+                    //long timeSinceLastNotification = SunshinePreferences
+                    //        .getEllapsedTimeSinceLastNotification(context);
 
                     boolean oneDayPassedSinceLastNotification = false;
 
-                    if (timeSinceLastNotification >= DateUtils.DAY_IN_MILLIS) {
-                        oneDayPassedSinceLastNotification = true;
-                    }
+                    //if (timeSinceLastNotification >= DateUtils.DAY_IN_MILLIS) {
+                   //     oneDayPassedSinceLastNotification = true;
+                   // }
 
-                    */
+
                 /*
                  * We only want to show the notification if the user wants them shown and we
                  * haven't shown a notification in the past day.
                  */
-/*
+
                     if (notificationsEnabled) {
-                        NotificationUtils.notifyUserOfNewWeather(context);
+                        NotificationUtils.notifyUserOfNewData(context);
                     }
-*/
+
 
 
             /* If the code reaches this point, we have successfully performed our sync */

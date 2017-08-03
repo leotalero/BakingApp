@@ -9,7 +9,7 @@
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             android:id="@+id/playerView"
             app:controller_layout_id="@layout/exo_playback_control_view3">
         </com.google.android.exoplayer2.ui.SimpleExoPlayerView>

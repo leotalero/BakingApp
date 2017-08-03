@@ -18,8 +18,8 @@ import android.util.Log;
  */
 
 public class BakingProvider  extends ContentProvider {
-    public static final int CODE_BAKING = 100;
-   // public static final int CODE_BAKING_WITH_DATE = 101;
+    public static final int CODE_BAKING = 110;
+    public static final int CODE_BAKING_WITH_ID = 121;
 
     /*
      * The URI Matcher used by this content provider. The leading "s" in this variable name
@@ -69,7 +69,7 @@ public class BakingProvider  extends ContentProvider {
          * The "/#" signifies to the UriMatcher that if PATH_WEATHER is followed by ANY number,
          * that it should return the CODE_BAKING_WITH_DATE code
          */
-        //matcher.addURI(authority, BakingContract.PATH_WEATHER + "/#", CODE_BAKING_WITH_DATE);
+        matcher.addURI(authority, BakingContract.PATH_Recipe + "/#", CODE_BAKING_WITH_ID);
 
         return matcher;
     }
@@ -85,16 +85,16 @@ public class BakingProvider  extends ContentProvider {
 
     @Override
     public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+       // final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         switch (sUriMatcher.match(uri)) {
 
             case CODE_BAKING:
-                db.beginTransaction();
+               // db.beginTransaction();
                 int rowsInserted = 0;
                 try {
                     for (ContentValues value : values) {
-                        if (value == null){
+                     /*   if (value == null){
                             throw new IllegalArgumentException("Cannot have null content values");
                         }
                         long _id = -1;
@@ -107,10 +107,14 @@ public class BakingProvider  extends ContentProvider {
                         if (_id != -1) {
                             rowsInserted++;
                         }
+                        */
+                        Uri flag = insert(uri, value);
                     }
-                    db.setTransactionSuccessful();
+
+
+                    //db.setTransactionSuccessful();
                 } finally {
-                    db.endTransaction();
+                    //db.endTransaction();
                 }
 
                 if (rowsInserted > 0) {
@@ -150,6 +154,18 @@ public class BakingProvider  extends ContentProvider {
                         sortOrder);
 
                 break;
+            }
+            // Individual flavor based on Id selected
+            case CODE_BAKING_WITH_ID:{
+                cursor = mOpenHelper.getReadableDatabase().query(
+                        BakingContract.BakingEntry.TABLE_NAME,
+                        projection,
+                        BakingContract.BakingEntry.COLUMN_RECIPE_ID + " = ?",
+                        new String[] {String.valueOf(ContentUris.parseId(uri))},
+                        null,
+                        null,
+                        sortOrder);
+                return cursor;
             }
 
             default:
@@ -218,14 +234,73 @@ public class BakingProvider  extends ContentProvider {
 
 
     @Override
-    public Uri insert(@NonNull Uri uri, ContentValues values) {
-        throw new RuntimeException(
-                "We are not implementing insert in Sunshine. Use bulkInsert instead");
+    public Uri insert(Uri uri, ContentValues values){
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        Uri returnUri=null;
+        switch (sUriMatcher.match(uri)) {
+            case CODE_BAKING: {
+                long _id = 0;
+                try {
+                    _id = db.insert(BakingContract.BakingEntry.TABLE_NAME, null, values);
+                    if (_id > 0) {
+                        returnUri = BakingContract.BakingEntry.buildUri(_id);
+                    } else {
+                        throw new android.database.SQLException("Failed to insert row into: " + uri);
+                    }
+                    //db.setTransactionSuccessful();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    //db.endTransaction();
+                }
+                // insert unless it is already contained in the database
+
+                break;
+            }
+
+            default: {
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+
+            }
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return returnUri;
     }
 
     @Override
-    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        throw new RuntimeException("We are not implementing update in Sunshine");
+    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs){
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        int numUpdated = 0;
+
+        if (contentValues == null){
+            throw new IllegalArgumentException("Cannot have null content values");
+        }
+
+        switch(sUriMatcher.match(uri)){
+            case CODE_BAKING:{
+                numUpdated = db.update(BakingContract.BakingEntry.TABLE_NAME,
+                        contentValues,
+                        selection,
+                        selectionArgs);
+                break;
+            }
+            case CODE_BAKING_WITH_ID: {
+                numUpdated = db.update(BakingContract.BakingEntry.TABLE_NAME,
+                        contentValues,
+                        BakingContract.BakingEntry.COLUMN_RECIPE_ID + " = ?",
+                        new String[] {String.valueOf(ContentUris.parseId(uri))});
+                break;
+            }
+            default:{
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+            }
+        }
+
+        if (numUpdated > 0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return numUpdated;
     }
 
     /**

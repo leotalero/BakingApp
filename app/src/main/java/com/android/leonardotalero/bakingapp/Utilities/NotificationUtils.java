@@ -42,12 +42,13 @@ public class NotificationUtils {
      * to access the data from our query. If the order of the Strings above changes, these
      * indices must be adjusted to match the order of the Strings.
      */
-    public static final int INDEX_COLUMN_DATE = 1;
-    public static final int INDEX_COLUMN_RECIPE_ID = 2;
-    public static final int INDEX_RECIPE_NAME = 3;
-    public static final int INDEX_INGREDIENTS=4;
+   /* public static final int INDEX_COLUMN_DATE = 0;
+    public static final int INDEX_COLUMN_RECIPE_ID = 1;
+    public static final int INDEX_RECIPE_NAME = 2;
+    public static final int INDEX_INGREDIENTS=;
     public static final int INDEX_STEPS=5;
 
+*/
     /*
      * This notification ID can be used to access our notification after we've displayed it. This
      * can be handy when we need to cancel the notification, or perhaps update it. This number is
@@ -83,11 +84,11 @@ public class NotificationUtils {
         if (cursor.moveToFirst()) {
 
             /* Weather ID as returned by API, used to identify the icon to be used */
-            Long date = cursor.getLong(INDEX_COLUMN_DATE);
-            int recipeId = cursor.getInt(INDEX_COLUMN_RECIPE_ID);
-            String recipeName = cursor.getString(INDEX_RECIPE_NAME);
-            String ingredientes = cursor.getString(INDEX_INGREDIENTS);
-            String steps = cursor.getString(INDEX_STEPS);
+            Long date = cursor.getLong(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_INGREDIENTS));
+            int recipeId = cursor.getInt(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_ID));
+            String recipeName = cursor.getString(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_NAME));
+            String ingredientes = cursor.getString(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_INGREDIENTS));
+            String steps = cursor.getString(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_STEPS));
 
 
             Resources resources = context.getResources();

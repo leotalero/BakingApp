@@ -2,7 +2,10 @@ package com.android.leonardotalero.bakingapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +23,7 @@ import android.view.MenuItem;
 
 import com.android.leonardotalero.bakingapp.Utilities.JsonUtils;
 import com.android.leonardotalero.bakingapp.Utilities.NetworkUtils;
+import com.android.leonardotalero.bakingapp.data.BakingPreferences;
 import com.android.leonardotalero.bakingapp.objects.Ingredient;
 import com.android.leonardotalero.bakingapp.objects.Recipe;
 import com.android.leonardotalero.bakingapp.objects.Step;
@@ -54,11 +58,14 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
     private String RECIPE_OBJECT="recipe";
     private SimpleItemRecyclerViewAdapter mAdapter;
     public Context c;
+    private SharedPreferences sharedPref;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         c=this;
         setContentView(R.layout.activity_step_list);
         DESC_STEP_INGREDIENT=getString(R.string.ingredients);
@@ -67,11 +74,22 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
         toolbar.setTitle(getTitle());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        Integer id= BakingPreferences.areRecipeFavorite(c);
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, R.string.notification_saved_preferences, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt(getString(R.string.pref_favorite), mRecipe.mId);
+                editor.commit();
+
+
             }
         });
         // Show the Up button in the action bar.
@@ -113,6 +131,13 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
         View recyclerView = findViewById(R.id.step_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView,mStep);
+
+        if(id!=null && id!=0 && id==mRecipe.mId){
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+        }else{
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+        }
+
     }
 
     @Override
@@ -173,15 +198,18 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
             holder.title.setText(mValues.get(position).sShortDescription);
            // holder..setText(mValues.get(position).content);
             String url_path = mValues.get(position).sThumbnailURL;
+            int placeholder=R.drawable.default_image;
 
             if (url_path==null || url_path.equals("")){
 
                 if((holder.mItem.sId)==ID_STEP_INGREDIENT) {
-                    //  url_path="https://www.google.com/imgres?imgurl=http%3A%2F%2Fwww.candyindustry.com%2Fext%2Fresources%2Fissues%2F2015-June%2FCIN_IngTech_0615_feature.jpg%3F1435000230&imgrefurl=http%3A%2F%2Fwww.candyindustry.com%2Farticles%2F86802-tracking-confectionery-ingredient-trends&docid=mdzwjrlOXyyOMM&tbnid=HWZPLpMP-dQ5kM%3A&vet=10ahUKEwi69oGu-qzVAhVEaD4KHVrAC0oQMwglKAAwAA..i&w=900&h=550&client=safari&bih=661&biw=1240&q=image%20ingredient&ved=0ahUKEwi69oGu-qzVAhVEaD4KHVrAC0oQMwglKAAwAA&iact=mrc&uact=8"; }
-                    url_path = "https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwjYmfGs6KzVAhXFCD4KHYqzCIoQjRwIBw&url=https%3A%2F%2Fpixabay.com%2Fen%2Frecipe-label-icon-symbol-spoon-575434%2F&psig=AFQjCNGn3pJgdYIAK5Dj7QODic4BNczlyg&ust=1501360094865522";
+                    url_path="https://cdn.hellofresh.com/us/cms/lentil/delicious_how-it-works/recipeCards.jpg";
 
+                    placeholder =R.drawable.recipe;
                 } else{
-                    url_path="https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwieysKZ96zVAhUNfiYKHcbhCOgQjRwIBw&url=https%3A%2F%2Fthenounproject.com%2Fterm%2Fsteps%2F187775%2F&psig=AFQjCNH-SWQX8bBta4AZpvHbiKtCn2XxcA&ust=1501364077976036";
+
+                    url_path="https://s-media-cache-ak0.pinimg.com/736x/32/5d/87/325d87045b2a0e21499814d85391670a--chef-hats-chefs.jpg";
+                    placeholder=R.drawable.default_image;
                 }
             }else{
 
@@ -189,8 +217,9 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
             //URL url = NetworkUtils.buildUrlImage(url_path);
             URL url = NetworkUtils.buildUrlImage(url_path);
 
+
             Picasso.with(mContex).load(url.toString())
-                    .placeholder(R.drawable.default_image)
+                    .placeholder(placeholder)
                     .error(R.drawable.default_image)
                     .into(holder.thumbnail);
 

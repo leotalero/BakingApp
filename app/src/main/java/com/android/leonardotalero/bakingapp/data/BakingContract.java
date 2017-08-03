@@ -19,6 +19,7 @@ public class BakingContract {
     public static final String PATH_Recipe = "recipe";
 
 
+
     /* Inner class that defines the table contents of the Recipe table */
     public static final class BakingEntry implements BaseColumns {
 

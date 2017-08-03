@@ -15,16 +15,12 @@ public class BakingAppWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+         RemoteViews rv;
 
-        Intent intent =new Intent(context,MainActivity.class);
-        PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,0);
-        views.setOnClickPendingIntent(R.id.appwidget_text,pendingIntent);
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+            rv = getGridRemoteView(context);
+
+        appWidgetManager.updateAppWidget(appWidgetId, rv);
+
     }
 
     @Override
@@ -32,6 +28,7 @@ public class BakingAppWidget extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
+            //bakingWidgetService.startActionWaterPlants(context);
         }
     }
 
@@ -43,6 +40,21 @@ public class BakingAppWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+    }
+
+
+    private static RemoteViews getGridRemoteView(Context context) {
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_list);
+        // Set the GridWidgetService intent to act as the adapter for the GridView
+        Intent intent = new Intent(context, GridWidgetService.class);
+        views.setRemoteAdapter(R.id.widget_grid_view, intent);
+        // Set the PlantDetailActivity intent to launch when clicked
+        Intent appIntent = new Intent(context, StepDetailActivity.class);
+        PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setPendingIntentTemplate(R.id.widget_grid_view, appPendingIntent);
+        // Handle empty gardens
+        views.setEmptyView(R.id.widget_grid_view, R.id.empty_view);
+        return views;
     }
 }
 

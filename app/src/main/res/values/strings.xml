@@ -12,6 +12,9 @@
 
     <string name="pref_enable_notifications_true">Enabled</string>
     <string name="pref_enable_notifications_false">Not Enabled</string>
+    <string name="pref_favorite" translatable="false">favorite</string>
+
+
     <string name="title_step_list">Steps</string>
     <string name="title_step_detail">Step Detail</string>
     <string name="title_videoFull">Video Full</string>
@@ -27,4 +30,7 @@
     <string name="restart">Restart</string>
     <string name="guess">Guess</string>
     <string name="notification_text">Notification</string>
+    <string name="saved_recipe">saved_recipe</string>
+    <string name="notification_saved_preferences">Recipe save as favorite!</string>
+    <string name="empty">No data</string>
 </resources>

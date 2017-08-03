@@ -47,8 +47,9 @@ import java.util.List;
  * in a {@link StepListActivity}.
  */
 public class StepDetailActivity extends AppCompatActivity implements IngredientFragment.OnListFragmentInteractionListener {
-
-    private String RECIPE_OBJECT="recipe";
+    public static final String EXTRA_INGREDIENTS_ID = "com.android.leonardotalero.bakingapp.extra.mINGREDIENTS";
+    public static final String EXTRA_ID = "com.android.leonardotalero.bakingapp.extra.mID";
+    public String RECIPE_OBJECT="recipe";
     private String ARG_ITEM_INGREDIENT="ingredient-list";
     private String  ARG_ITEM_ID="mid";
     private Recipe mRecipe;
@@ -56,12 +57,21 @@ public class StepDetailActivity extends AppCompatActivity implements IngredientF
     private int ID_STEP_INGREDIENT=990;
     private List<Ingredient> mIngredients;
     private Bundle arguments;
+    private String  mDataWidget;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
+        mDataWidget = getIntent().getStringExtra(EXTRA_ID);
+
+        if(mDataWidget!=null){
+            mId=getIntent().getStringExtra(EXTRA_ID);
+
+        }
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
@@ -112,7 +122,7 @@ public class StepDetailActivity extends AppCompatActivity implements IngredientF
 
             mId=getIntent().getStringExtra(StepDetailFragment.ARG_ITEM_ID);
 
-            gotoFragment();
+
 
         }else{
 
@@ -121,8 +131,9 @@ public class StepDetailActivity extends AppCompatActivity implements IngredientF
             mIngredients=savedInstanceState.getParcelableArrayList(ARG_ITEM_INGREDIENT);
             mId=savedInstanceState.getString(ARG_ITEM_ID);
             arguments=savedInstanceState.getParcelable("arguments");
-            gotoFragment();
+            //gotoFragment();
         }
+        gotoFragment();
     }
 
 
