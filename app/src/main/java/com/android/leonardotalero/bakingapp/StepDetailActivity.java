@@ -49,6 +49,8 @@ import java.util.List;
 public class StepDetailActivity extends AppCompatActivity implements IngredientFragment.OnListFragmentInteractionListener {
     public static final String EXTRA_INGREDIENTS_ID = "com.android.leonardotalero.bakingapp.extra.mINGREDIENTS";
     public static final String EXTRA_ID = "com.android.leonardotalero.bakingapp.extra.mID";
+    public static final String EXTRA_RECIPE = "com.android.leonardotalero.bakingapp.extra.mRecipe";
+
     public String RECIPE_OBJECT="recipe";
     private String ARG_ITEM_INGREDIENT="ingredient-list";
     private String  ARG_ITEM_ID="mid";
@@ -64,12 +66,14 @@ public class StepDetailActivity extends AppCompatActivity implements IngredientF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
-        mDataWidget = getIntent().getStringExtra(EXTRA_ID);
-
-        if(mDataWidget!=null){
-            mId=getIntent().getStringExtra(EXTRA_ID);
-
+        mId = getIntent().getStringExtra(EXTRA_ID);
+        if(mId!=null){
+            mDataWidget=getIntent().getStringExtra(EXTRA_INGREDIENTS_ID);
+            mIngredients=JsonUtils.jsonToIngredientsList(mDataWidget);
+            mRecipe=getIntent().getParcelableExtra(EXTRA_RECIPE);
         }
+
+
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
@@ -107,20 +111,24 @@ public class StepDetailActivity extends AppCompatActivity implements IngredientF
             intent.putExtra(StepDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.sId));
             intent.putExtra(StepDetailFragment.ARG_ITEM_STEP, holder.mItem);
        */
+            if(mId==null){
+                arguments = new Bundle();
+                arguments.putString(StepDetailFragment.ARG_ITEM_ID,
+                        getIntent().getStringExtra(StepDetailFragment.ARG_ITEM_ID));
+                arguments.putParcelableArrayList(StepDetailFragment.ARG_ITEM_INGREDIENT,
+                        getIntent().getParcelableArrayListExtra(StepDetailFragment.ARG_ITEM_INGREDIENT));
+                arguments.putParcelable(StepDetailFragment.ARG_ITEM_STEP,
+                        getIntent().getParcelableExtra(StepDetailFragment.ARG_ITEM_STEP));
+                arguments.putParcelable(StepDetailFragment.ARG_ITEM,
+                        getIntent().getParcelableExtra(StepDetailFragment.ARG_ITEM));
+                mRecipe=getIntent().getParcelableExtra(StepDetailFragment.ARG_ITEM);
+                mIngredients=getIntent().getParcelableArrayListExtra(StepDetailFragment.ARG_ITEM_INGREDIENT);
 
-            arguments = new Bundle();
-            arguments.putString(StepDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(StepDetailFragment.ARG_ITEM_ID));
-            arguments.putParcelableArrayList(StepDetailFragment.ARG_ITEM_INGREDIENT,
-                    getIntent().getParcelableArrayListExtra(StepDetailFragment.ARG_ITEM_INGREDIENT));
-            arguments.putParcelable(StepDetailFragment.ARG_ITEM_STEP,
-                    getIntent().getParcelableExtra(StepDetailFragment.ARG_ITEM_STEP));
-            arguments.putParcelable(StepDetailFragment.ARG_ITEM,
-                    getIntent().getParcelableExtra(StepDetailFragment.ARG_ITEM));
-            mRecipe=getIntent().getParcelableExtra(StepDetailFragment.ARG_ITEM);
-            mIngredients=getIntent().getParcelableArrayListExtra(StepDetailFragment.ARG_ITEM_INGREDIENT);
+                mId=getIntent().getStringExtra(StepDetailFragment.ARG_ITEM_ID);
+            }else{
 
-            mId=getIntent().getStringExtra(StepDetailFragment.ARG_ITEM_ID);
+            }
+
 
 
 
@@ -187,6 +195,7 @@ public class StepDetailActivity extends AppCompatActivity implements IngredientF
     public void onBackPressed() {
 
         super.onBackPressed();
+
 
     }
 
