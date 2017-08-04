@@ -86,7 +86,7 @@ public class SyncUtils {
                  * If the Cursor was null OR if it was empty, we need to sync immediately to
                  * be able to display data to the user.
                  */
-                if (null == cursor || cursor.getCount() == 0 || cursor.getCount() == 1) {
+                if (null == cursor || cursor.getCount() == 0) {
                     startImmediateSync(context);
                 }
 

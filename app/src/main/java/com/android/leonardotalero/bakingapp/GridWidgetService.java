@@ -49,6 +49,12 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     //called on start and when notifyAppWidgetViewDataChanged is called
     @Override
     public  void onDataSetChanged() {
+
+        searchData();
+
+    }
+
+    public Cursor  searchData(){
         Integer id= BakingPreferences.areRecipeFavorite(mContext);
         //Query to get the plant that's most in need for water (last watered)
         String selection=String.valueOf(id);
@@ -61,14 +67,15 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
                 null,
                 null
         );
-        int ingredientsIndex = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_INGREDIENTS);
-        mCursor.moveToPosition(0);
-        ingredientsString = mCursor.getString(ingredientsIndex);
-        ingredientsList= JsonUtils.jsonToIngredientsList(ingredientsString);
-        mRecipes=JsonUtils.cursorToList(mCursor);
+        if(mCursor!=null && mCursor.getCount()!=0){
+            int ingredientsIndex = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_INGREDIENTS);
+            mCursor.moveToPosition(0);
+            ingredientsString = mCursor.getString(ingredientsIndex);
+            ingredientsList= JsonUtils.jsonToIngredientsList(ingredientsString);
+            mRecipes=JsonUtils.cursorToList(mCursor);
+        }
 
-
-
+        return mCursor;
     }
 
     @Override
@@ -102,16 +109,7 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
        // long plantId = mCursor.getLong(idIndex);
         //ingredientsString = mCursor.getString(ingredientsIndex);
         //ingredientsList= JsonUtils.jsonToIngredientsList(ingredientsString);
-        if (mCursor != null || mCursor.getCount() != 0) {
 
-           /* mCursor.moveToPosition(0);
-            int idIndex = mCursor.getColumnIndex(BakingContract.BakingEntry._ID);
-            int ingredientsIndex = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_INGREDIENTS);
-            long plantId = mCursor.getLong(idIndex);
-            ingredientsString = mCursor.getString(ingredientsIndex);
-            ingredientsList= JsonUtils.jsonToIngredientsList(ingredientsString);
-    */
-        }
 
 
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.ingredient_widget);
@@ -133,6 +131,8 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         Intent fillInIntent = new Intent();
         fillInIntent.putExtras(extras);
         views.setOnClickFillInIntent(R.id.itemwidget, fillInIntent);
+
+
 
         return views;
 

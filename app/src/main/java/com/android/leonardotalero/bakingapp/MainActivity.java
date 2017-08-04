@@ -5,30 +5,31 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.ProgressBar;
-
-import android.support.v4.content.CursorLoader;
-
 import com.android.leonardotalero.bakingapp.data.BakingContract;
 
 import com.android.leonardotalero.bakingapp.databinding.ActivityMainBinding;
 import android.databinding.DataBindingUtil;
 
 import com.android.leonardotalero.bakingapp.objects.Recipe;
-import com.android.leonardotalero.bakingapp.sync.SyncIntentService;
 import com.android.leonardotalero.bakingapp.sync.SyncUtils;
 
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.android.leonardotalero.bakingapp.sync.SyncUtils.startImmediateSync;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements
         //mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new RecipeRecyclerAdapter(this);
+        mAdapter = new RecipeRecyclerAdapter(this,null);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -141,14 +142,9 @@ public class MainActivity extends AppCompatActivity implements
                 String sortOrder = BakingContract.BakingEntry.COLUMN_DATE + " ASC";
 
                 String selection = null;
+                return new CursorLoader(this, forecastQueryUri, null,
+                        null, null, null);
 
-                CursorLoader cursorLoader = new CursorLoader(this,
-                        forecastQueryUri,
-                        ALL_DATA,
-                        selection,
-                        null,
-                        sortOrder);
-                return cursorLoader;
 
             default:
                 throw new RuntimeException("Loader Not Implemented: " + id);
@@ -167,7 +163,13 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
+        //Refresh your stuff here
+    }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
@@ -200,5 +202,27 @@ public class MainActivity extends AppCompatActivity implements
 
 
 */
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemThatWasClickedId = item.getItemId();
+
+        if (itemThatWasClickedId == R.id.action_search) {
+
+            startImmediateSync(this);
+            return true;
+        }
+
+        //buildUrlSearch
+        return super.onOptionsItemSelected(item);
+    }
 }
 

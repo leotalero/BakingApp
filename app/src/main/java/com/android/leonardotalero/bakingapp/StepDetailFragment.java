@@ -157,8 +157,13 @@ public class StepDetailFragment extends Fragment  implements ExoPlayer.EventList
 
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.textView_detail_step)).setText(mItem.sDescription);
-            initializeMediaSession();
-            initializePlayer(Uri.parse(mItem.sVideoUrl));
+            if(mItem.sVideoUrl.equals("") || mItem.sVideoUrl==null){
+                mPlayerView.setVisibility(View.GONE);
+            }else{
+                initializeMediaSession();
+                initializePlayer(Uri.parse(mItem.sVideoUrl));
+            }
+
         }
 
 
@@ -273,13 +278,16 @@ public class StepDetailFragment extends Fragment  implements ExoPlayer.EventList
      * Release ExoPlayer.
      */
     private void releasePlayer() {
-        mNotificationManager.cancelAll();
+        //mNotificationManager.cancelAll();
 
         if (mExoPlayer != null) {
+
+            mNotificationManager.cancelAll();
             shouldAutoPlay = mExoPlayer.getPlayWhenReady();
             mExoPlayer.release();
             mExoPlayer = null;
             trackSelector = null;
+            mMediaSession.setActive(false);
         }
     }
 
@@ -287,7 +295,7 @@ public class StepDetailFragment extends Fragment  implements ExoPlayer.EventList
     public void onDestroy() {
         super.onDestroy();
         releasePlayer();
-        mMediaSession.setActive(false);
+
 
     }
 
@@ -391,7 +399,7 @@ public class StepDetailFragment extends Fragment  implements ExoPlayer.EventList
         builder.setContentTitle(getString(R.string.guess))
                 .setContentText(getString(R.string.notification_text))
                 .setContentIntent(contentPendingIntent)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_notification)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .addAction(restartAction)
                 .addAction(playPauseAction)

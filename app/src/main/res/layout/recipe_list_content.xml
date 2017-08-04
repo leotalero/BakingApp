@@ -39,7 +39,7 @@
                     android:text=""
                     android:textColor="@color/album_title"
                     android:textSize="@dimen/album_title"
-                    android:background="@color/colorAccent"/>
+                    android:background="@color/colorPrimary"/>
 
                 <TextView
                     android:id="@+id/count"
@@ -51,7 +51,7 @@
                     android:paddingRight="@dimen/album_title_padding"
                     android:textSize="@dimen/songs_count"
                     android:textColor="@color/album_title"
-                    android:background="@color/colorAccent"/>
+                    android:background="@color/colorPrimary"/>
 
                 <ImageView
                     android:id="@+id/overflow"

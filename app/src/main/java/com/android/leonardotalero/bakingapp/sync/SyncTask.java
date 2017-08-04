@@ -96,7 +96,7 @@ public class SyncTask {
                  */
 
                     if (notificationsEnabled) {
-                        NotificationUtils.notifyUserOfNewData(context);
+                       // NotificationUtils.notifyUserOfNewData(context);
                     }
 
 

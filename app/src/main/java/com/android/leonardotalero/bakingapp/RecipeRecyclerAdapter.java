@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.android.leonardotalero.bakingapp.Utilities.JsonUtils;
 import com.android.leonardotalero.bakingapp.Utilities.NetworkUtils;
 import com.android.leonardotalero.bakingapp.data.BakingContract;
+import com.android.leonardotalero.bakingapp.data.BakingPreferences;
 import com.android.leonardotalero.bakingapp.objects.Recipe;
 import com.squareup.picasso.Picasso;
 
@@ -29,7 +30,7 @@ public class RecipeRecyclerAdapter extends   RecyclerView.Adapter<RecipeRecycler
         private Cursor mCursor;
         private Context mContext;
         private List<Recipe> mRecipes;
-    private String RECIPE_OBJECT="recipe";
+        private String RECIPE_OBJECT="recipe";
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -48,10 +49,10 @@ public class RecipeRecyclerAdapter extends   RecyclerView.Adapter<RecipeRecycler
             }
         }
 
-        public RecipeRecyclerAdapter(@NonNull Context mContext) {
+        public RecipeRecyclerAdapter(@NonNull Context mContext,Cursor cursor) {
             this.mContext = mContext;
             //this.mRecipes = recipes;
-
+           this.mCursor=cursor;
 
         }
 
@@ -73,6 +74,7 @@ public class RecipeRecyclerAdapter extends   RecyclerView.Adapter<RecipeRecycler
             mCursor.moveToPosition(position);
             int name = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_NAME);
             int image = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_IMAGE);
+            int mId=mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_ID);
 
             holder.title.setText(mCursor.getString(name));
            // holder.thumbnail
@@ -95,6 +97,15 @@ public class RecipeRecyclerAdapter extends   RecyclerView.Adapter<RecipeRecycler
 
             //Recipe recipe = mRecipes.get(position);
             //holder.title.setText(recipe.mName.toString());
+            Integer isfavorite=BakingPreferences.areRecipeFavorite(mContext);
+            if(isfavorite!=null && isfavorite!=0 && isfavorite==mCursor.getInt(mId)){
+                holder.title.setBackground(mContext.getResources().getDrawable(R.color.colorAccent));
+                holder.count.setBackground(mContext.getResources().getDrawable(R.color.colorAccent));
+            }else{
+                holder.title.setBackground(mContext.getResources().getDrawable(R.color.colorPrimaryDark));
+                holder.count.setBackground(mContext.getResources().getDrawable(R.color.colorPrimaryDark));
+            }
+
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,6 +145,7 @@ public class RecipeRecyclerAdapter extends   RecyclerView.Adapter<RecipeRecycler
             mRecipes=JsonUtils.cursorToList(mCursor);
             this.notifyDataSetChanged();
         }
+
     }
 
 

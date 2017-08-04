@@ -5,30 +5,43 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.widget.RemoteViews;
+
+import com.android.leonardotalero.bakingapp.Utilities.JsonUtils;
+import com.android.leonardotalero.bakingapp.data.BakingContract;
+import com.android.leonardotalero.bakingapp.data.BakingPreferences;
+import com.android.leonardotalero.bakingapp.objects.Recipe;
+
+import java.util.List;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class BakingAppWidget extends AppWidgetProvider {
 
+    private static Cursor mCursor;
+    private static List<Recipe> mRecipes;
+    private static String nameRecipe;
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
          RemoteViews rv;
-
-            rv = getGridRemoteView(context);
-
+        rv = getGridRemoteView(context);
         appWidgetManager.updateAppWidget(appWidgetId, rv);
 
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
+    public  void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        bakingWidgetService.startActionWidgetUpdate(context);
+    }
+
+    public static void updateWidgets(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
-            //bakingWidgetService.startActionWaterPlants(context);
         }
     }
 
@@ -54,6 +67,32 @@ public class BakingAppWidget extends AppWidgetProvider {
         views.setPendingIntentTemplate(R.id.widget_grid_view, appPendingIntent);
         // Handle empty gardens
         views.setEmptyView(R.id.widget_grid_view, R.id.empty_view);
+
+        Integer id= BakingPreferences.areRecipeFavorite(context);
+        //Query to get the plant that's most in need for water (last watered)
+        String selection=String.valueOf(id);
+        //Query to get the plant that's most in need for water (last watered)
+        Uri PLANT_URI = BakingContract.BakingEntry.buildUri(Long.valueOf(selection));
+        mCursor = context.getContentResolver().query(
+                PLANT_URI,
+                null,
+                selection,
+                null,
+                null
+        );
+        if(mCursor!=null && mCursor.getCount()!=0){
+            int ingredientsIndex = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_INGREDIENTS);
+            mCursor.moveToPosition(0);
+            //ingredientsString = mCursor.getString(ingredientsIndex);
+            //ingredientsList= JsonUtils.jsonToIngredientsList(ingredientsString);
+            mRecipes=JsonUtils.cursorToList(mCursor);
+            nameRecipe=mRecipes.get(0).mName;
+        }
+
+
+
+        views.setTextViewText(R.id.text_title_recipe,nameRecipe);
+
         return views;
     }
 }

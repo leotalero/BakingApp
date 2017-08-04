@@ -4,6 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+
+    <TextView
+        android:id="@+id/text_title_recipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
+
     <GridView
         android:id="@+id/widget_grid_view"
         android:layout_width="match_parent"
@@ -16,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
@@ -33,5 +52,5 @@
 
     </RelativeLayout>
 
-
+    </LinearLayout>
 </FrameLayout>

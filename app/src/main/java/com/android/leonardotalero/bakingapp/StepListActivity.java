@@ -59,6 +59,9 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
     private SimpleItemRecyclerViewAdapter mAdapter;
     public Context c;
     private SharedPreferences sharedPref;
+    private Integer idFavorite;
+    private FloatingActionButton fab;
+    private boolean checkBackPress=false;
 
 
     @Override
@@ -73,25 +76,12 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        Integer id= BakingPreferences.areRecipeFavorite(c);
-
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, R.string.notification_saved_preferences, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-                sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt(getString(R.string.pref_favorite), mRecipe.mId);
-                editor.commit();
+         idFavorite= BakingPreferences.areRecipeFavorite(c);
 
 
-            }
-        });
+        
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -127,17 +117,49 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
 
             }
         }
-
+        toolbar.setTitle(mRecipe.mName);
         View recyclerView = findViewById(R.id.step_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView,mStep);
 
-        if(id!=null && id!=0 && id==mRecipe.mId){
+        if(idFavorite!=null && idFavorite!=0 && idFavorite==mRecipe.mId){
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
         }else{
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
         }
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idFavorite= BakingPreferences.areRecipeFavorite(c);
+
+
+
+                if(idFavorite!=null && idFavorite!=0 && idFavorite==mRecipe.mId){
+
+                    fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                    Snackbar.make(view, R.string.notification_remove_preferences, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.clear();
+                    editor.commit();
+                }else{
+
+                    sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putInt(getString(R.string.pref_favorite), mRecipe.mId);
+                    editor.commit();
+                    fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                    Snackbar.make(view, R.string.notification_saved_preferences, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+
+                bakingWidgetService.startActionWidgetUpdate(c);
+
+
+            }
+        });
     }
 
     @Override
@@ -292,5 +314,11 @@ public class StepListActivity extends AppCompatActivity implements IngredientFra
         super.onSaveInstanceState(outState);
 
 
+    }
+    @Override
+    public void onBackPressed()
+    {
+
+        super.onBackPressed();
     }
 }

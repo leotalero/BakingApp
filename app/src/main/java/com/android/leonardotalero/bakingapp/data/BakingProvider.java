@@ -109,6 +109,7 @@ public class BakingProvider  extends ContentProvider {
                         }
                         */
                         Uri flag = insert(uri, value);
+                        rowsInserted++;
                     }
 
 
@@ -165,7 +166,7 @@ public class BakingProvider  extends ContentProvider {
                         null,
                         null,
                         sortOrder);
-                return cursor;
+                break;
             }
 
             default:
