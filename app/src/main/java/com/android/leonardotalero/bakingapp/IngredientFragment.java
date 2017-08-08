@@ -28,10 +28,10 @@ import java.util.List;
  */
 public class IngredientFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
+
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static String ARG_INGREDIENTS="ingredintes-listado";
-    // TODO: Customize parameters
+
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private IngredientRecyclerViewAdapter mAdapter;

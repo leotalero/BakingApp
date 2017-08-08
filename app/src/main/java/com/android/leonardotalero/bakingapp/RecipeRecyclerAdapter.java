@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,13 +78,6 @@ public class RecipeRecyclerAdapter extends   RecyclerView.Adapter<RecipeRecycler
             int mId=mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_ID);
 
             holder.title.setText(mCursor.getString(name));
-           // holder.thumbnail
-
-
-            /*String urlImage=mCursor.getString(image);
-            if (urlImage==null || urlImage.equals("")){
-                urlImage="https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwjYmfGs6KzVAhXFCD4KHYqzCIoQjRwIBw&url=https%3A%2F%2Fpixabay.com%2Fen%2Frecipe-label-icon-symbol-spoon-575434%2F&psig=AFQjCNGn3pJgdYIAK5Dj7QODic4BNczlyg&ust=1501360094865522";
-            }*/
             String url_path = mCursor.getString(image);
             if (url_path==null || url_path.equals("")){
                 url_path="https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwjYmfGs6KzVAhXFCD4KHYqzCIoQjRwIBw&url=https%3A%2F%2Fpixabay.com%2Fen%2Frecipe-label-icon-symbol-spoon-575434%2F&psig=AFQjCNGn3pJgdYIAK5Dj7QODic4BNczlyg&ust=1501360094865522";
@@ -95,8 +89,6 @@ public class RecipeRecyclerAdapter extends   RecyclerView.Adapter<RecipeRecycler
                     .error(R.drawable.recipe)
                     .into(holder.thumbnail);
 
-            //Recipe recipe = mRecipes.get(position);
-            //holder.title.setText(recipe.mName.toString());
             Integer isfavorite=BakingPreferences.areRecipeFavorite(mContext);
             if(isfavorite!=null && isfavorite!=0 && isfavorite==mCursor.getInt(mId)){
                 holder.title.setBackground(mContext.getResources().getDrawable(R.color.colorAccent));
@@ -125,6 +117,7 @@ public class RecipeRecyclerAdapter extends   RecyclerView.Adapter<RecipeRecycler
         public int getItemCount() {
             if (null == mCursor) return 0;
            int num =mCursor.getCount();
+            Log.i("recyclerview",String.valueOf(num));
             return   num;
 
             // case list not cursor -

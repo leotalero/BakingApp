@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         loadData();
 
-       // SyncUtils.initialize(this);
+        SyncUtils.initialize(this);
        getSupportLoaderManager().initLoader(ID_RECIPE_LOADER, null, this);
 
 
