@@ -25,7 +25,7 @@
         <!-- Our ContentProvider -->
         <service
             android:name=".sync.SyncIntentService"
-            android:exported="false" />
+            android:exported="true" />
 
         <provider
             android:name=".data.BakingProvider"

@@ -23,6 +23,7 @@ import com.android.leonardotalero.bakingapp.databinding.ActivityMainBinding;
 import android.databinding.DataBindingUtil;
 
 import com.android.leonardotalero.bakingapp.objects.Recipe;
+import com.android.leonardotalero.bakingapp.sync.SyncIntentService;
 import com.android.leonardotalero.bakingapp.sync.SyncUtils;
 
 
@@ -88,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements
         }
         loadData();
 
-        SyncUtils.initialize(this);
-        getSupportLoaderManager().initLoader(ID_RECIPE_LOADER, null, this);
+       // SyncUtils.initialize(this);
+       getSupportLoaderManager().initLoader(ID_RECIPE_LOADER, null, this);
 
 
     }
