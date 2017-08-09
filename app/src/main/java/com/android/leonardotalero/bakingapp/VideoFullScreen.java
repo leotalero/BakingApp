@@ -336,5 +336,9 @@ public class VideoFullScreen extends AppCompatActivity implements ExoPlayer.Even
     }
 
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        releasePlayer();
+    }
 }
