@@ -19,7 +19,7 @@ public class BakingDBhelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "baking.db";
 
 
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 14;
 
     public BakingDBhelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -53,14 +53,14 @@ public class BakingDBhelper extends SQLiteOpenHelper {
 
                         BakingEntry.COLUMN_RECIPE_ID + " INTEGER NOT NULL,"                  +
 
-                        BakingEntry.COLUMN_RECIPE_NAME   + " TEXT NOT NULL, "                    +
-                        BakingEntry.COLUMN_INGREDIENTS   + " TEXT NOT NULL, "                    +
+                        BakingEntry.COLUMN_RECIPE_NAME   + " TEXT , "                    +
+                        BakingEntry.COLUMN_INGREDIENTS   + " TEXT , "                    +
 
-                        BakingEntry.COLUMN_STEPS   + " TEXT NOT NULL, "                    +
+                        BakingEntry.COLUMN_STEPS   + " TEXT , "                    +
                         BakingEntry.COLUMN_SERVINGS   + " TEXT , "                    +
 
                         BakingEntry.COLUMN_IMAGE + " TEXT, "                    +
-                        BakingEntry.COLUMN_ADITIONAL + " TEXT, "                    +
+                        BakingEntry.COLUMN_ADITIONAL + " TEXT "                    +
 
 
                 /*
@@ -69,8 +69,9 @@ public class BakingDBhelper extends SQLiteOpenHelper {
                  * SQLite that if we have a BAKING entry for a certain date and we attempt to
                  * insert another BAKING entry with that date, we replace the old BAKING entry.
                  */
-                        " UNIQUE (" + BakingEntry.COLUMN_DATE + ") ON CONFLICT REPLACE);";
+                        //" UNIQUE (" + BakingEntry.COLUMN_DATE + ") ON CONFLICT REPLACE);";
 
+                        " );";
         /*
          * After we've spelled out our SQLite table creation statement above, we actually execute
          * that SQL with the execSQL method of our SQLite database object.

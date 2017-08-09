@@ -1,0 +1,65 @@
+package com.android.leonardotalero.bakingapp;
+
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.Intent;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.isInternal;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.core.AllOf.allOf;
+import static org.hamcrest.core.IsNot.not;
+
+/**
+ * Created by gtalero on 8/8/17.
+ */
+
+public class StepActivityScreenTest {
+
+
+    private static final String emailMessage = "I just ordered a delicious tea from TeaTime. Next time you are craving a tea, check them out!";
+
+    /**
+     *
+     * This test demonstrates Espresso Intents using the IntentsTestRule, a class that extends
+     * ActivityTestRule. IntentsTestRule initializes Espresso-Intents before each test that is annotated
+     * with @Test and releases it once the test is complete. The designated Activity
+     * is also terminated after each test.
+     *
+     */
+
+    @Rule
+    public IntentsTestRule<StepDetailActivity
+            > mActivityRule = new IntentsTestRule<>(
+            StepDetailActivity.class);
+
+
+    @Before
+    public void stubAllExternalIntents() {
+        // By default Espresso Intents does not stub any Intents. Stubbing needs to be setup before
+        // every test run. In this case all external Intents will be blocked.
+        intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
+    }
+
+    @Test
+    public void clickSendEmailButton_SendsEmail() {
+
+        onView(withId(R.id.card_view_step)).perform(click());
+        // intended(Matcher<Intent> matcher) asserts the given matcher matches one and only one
+        // intent sent by the application.
+        intended(allOf(
+                hasAction(Intent.ACTION_SENDTO),
+                hasExtra(Intent.EXTRA_TEXT, emailMessage)));
+
+    }
+}

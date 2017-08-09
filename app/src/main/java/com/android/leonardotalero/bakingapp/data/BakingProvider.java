@@ -85,16 +85,17 @@ public class BakingProvider  extends ContentProvider {
 
     @Override
     public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
-       // final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-
+       final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        int rowsInserted = 0;
         switch (sUriMatcher.match(uri)) {
 
             case CODE_BAKING:
-               // db.beginTransaction();
-                int rowsInserted = 0;
-                try {
-                    for (ContentValues value : values) {
-                     /*   if (value == null){
+                db.beginTransaction();
+
+                /* try {
+
+                   for (ContentValues value : values) {
+                        if (value == null){
                             throw new IllegalArgumentException("Cannot have null content values");
                         }
                         long _id = -1;
@@ -107,26 +108,51 @@ public class BakingProvider  extends ContentProvider {
                         if (_id != -1) {
                             rowsInserted++;
                         }
-                        */
-                        Uri flag = insert(uri, value);
-                        rowsInserted++;
+
+                        Log.i("record_inserted",String.valueOf(_id));
+                        //Uri flag = insert(uri, value);
+                        //rowsInserted++;
                     }
 
 
-                    //db.setTransactionSuccessful();
-                } finally {
-                    //db.endTransaction();
+                    db.setTransactionSuccessful();
                 }
+                catch(Exception e){
+                    e.printStackTrace();
 
-                if (rowsInserted > 0) {
+                }
+                finally {
+                    db.endTransaction();
+                }
+                //db.endTransaction();
+
+                */
+                try {
+                    for (ContentValues cv : values) {
+                            long newID = db.insertOrThrow(BakingContract.BakingEntry.TABLE_NAME, null, cv);
+                            if (newID <= 0) {
+                                throw new SQLException("Failed to insert row into " + uri);
+                            }
+                        }
+
+                    } finally {
+                        db.setTransactionSuccessful();
+                        db.endTransaction();
+                    }
+                //if (rowsInserted > 0) {
+
                     getContext().getContentResolver().notifyChange(uri, null);
-                }
+                    rowsInserted = values.length;
+                    //getContext().getContentResolver().notifyChange(uri, null);
+                //}
 
-                return rowsInserted;
 
-            default:
+
+            /*default:
                 return super.bulkInsert(uri, values);
+                */
         }
+        return rowsInserted;
     }
 
 
@@ -201,9 +227,9 @@ public class BakingProvider  extends ContentProvider {
                         selection,
                         selectionArgs);
                 // reset _ID
-                mOpenHelper.getWritableDatabase().execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +
+                /*mOpenHelper.getWritableDatabase().execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +
                         BakingContract.BakingEntry.TABLE_NAME + "'");
-
+                */
                 break;
 
             default:

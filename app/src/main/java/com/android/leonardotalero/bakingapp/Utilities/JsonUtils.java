@@ -125,35 +125,38 @@ public class JsonUtils {
             List<Ingredient> Ingredientes=new ArrayList<Ingredient>();
             try {
 
-                JSONArray recipeJson = new JSONArray(ingredients);
+                if(ingredients!=null){
+                    JSONArray recipeJson = new JSONArray(ingredients);
 
 
 
-                for (int i = 0; i < recipeJson.length(); i++) {
+                    for (int i = 0; i < recipeJson.length(); i++) {
 
 
-                    int quantity;
-                    String measure;
-                    String ingredient;
-                    JSONObject ingrediente = recipeJson.getJSONObject(i);
+                        int quantity;
+                        String measure;
+                        String ingredient;
+                        JSONObject ingrediente = recipeJson.getJSONObject(i);
 
 
-                    quantity = ingrediente.getInt(OWM_QUANT);
-                    measure = ingrediente.getString(OWM_MEASURE);
-                    ingredient = ingrediente.getString(OWM_INGREDIENT);
+                        quantity = ingrediente.getInt(OWM_QUANT);
+                        measure = ingrediente.getString(OWM_MEASURE);
+                        ingredient = ingrediente.getString(OWM_INGREDIENT);
 
 
 
-                    Ingredient ingredientFinal= new Ingredient();
-                    ingredientFinal.iQuantity=quantity;
-                    ingredientFinal.iMeasure=measure;
-                    ingredientFinal.iIngredient=ingredient;
+                        Ingredient ingredientFinal= new Ingredient();
+                        ingredientFinal.iQuantity=quantity;
+                        ingredientFinal.iMeasure=measure;
+                        ingredientFinal.iIngredient=ingredient;
 
-                    Ingredientes.add(ingredientFinal);
+                        Ingredientes.add(ingredientFinal);
+
+
+                    }
 
 
                 }
-
 
 
 
@@ -172,43 +175,46 @@ public class JsonUtils {
         List<Step> stepsFinal=new ArrayList<Step>();
         try {
 
-            JSONArray recipeJson = new JSONArray(steps);
+            if(steps!=null){
+                JSONArray recipeJson = new JSONArray(steps);
 
 
 
-            for (int i = 0; i < recipeJson.length(); i++) {
+                for (int i = 0; i < recipeJson.length(); i++) {
 
 
-                int id;
-                String shortDesc;
-                String description;
-                String videoUrl;
-                String thumbnail;
+                    int id;
+                    String shortDesc;
+                    String description;
+                    String videoUrl;
+                    String thumbnail;
 
-                JSONObject step = recipeJson.getJSONObject(i);
-
-
-                id = step.getInt(OWM_STEP_ID);
-                shortDesc = step.getString(OWM_STEP_SHORT_DESCRIPTION);
-                description = step.getString(OWM_STEP_DESCRIPTION);
-                videoUrl = step.getString(OWM_STEP_VIDEO);
-                thumbnail = step.getString(OWM_THUMBNAIL);
+                    JSONObject step = recipeJson.getJSONObject(i);
 
 
-
-                Step stepObject= new Step();
-                stepObject.sId=id;
-                stepObject.sShortDescription=shortDesc;
-                stepObject.sDescription=description;
-                stepObject.sVideoUrl=videoUrl;
-                stepObject.sThumbnailURL=thumbnail;
+                    id = step.getInt(OWM_STEP_ID);
+                    shortDesc = step.getString(OWM_STEP_SHORT_DESCRIPTION);
+                    description = step.getString(OWM_STEP_DESCRIPTION);
+                    videoUrl = step.getString(OWM_STEP_VIDEO);
+                    thumbnail = step.getString(OWM_THUMBNAIL);
 
 
-                stepsFinal.add(stepObject);
+
+                    Step stepObject= new Step();
+                    stepObject.sId=id;
+                    stepObject.sShortDescription=shortDesc;
+                    stepObject.sDescription=description;
+                    stepObject.sVideoUrl=videoUrl;
+                    stepObject.sThumbnailURL=thumbnail;
+
+
+                    stepsFinal.add(stepObject);
+
+
+                }
 
 
             }
-
 
 
 

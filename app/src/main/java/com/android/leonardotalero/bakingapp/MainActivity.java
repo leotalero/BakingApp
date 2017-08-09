@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.ProgressBar;
+
+import com.amitshekhar.DebugDB;
 import com.android.leonardotalero.bakingapp.data.BakingContract;
 
 import com.android.leonardotalero.bakingapp.databinding.ActivityMainBinding;
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mLoadingIndicator=mBinding.pbLoadingIndicator;
-
+        DebugDB.getAddressLog();
 
         //mRecipe.add(new Recipe(1,"prueba",new ArrayList<Ingredient>(),new ArrayList<Step>(),"",""));
         showLoading();
@@ -90,8 +92,8 @@ public class MainActivity extends AppCompatActivity implements
         loadData();
 
         SyncUtils.initialize(this);
-       getSupportLoaderManager().initLoader(ID_RECIPE_LOADER, null, this);
 
+        getSupportLoaderManager().initLoader(ID_RECIPE_LOADER, null, this);
 
     }
 
@@ -160,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements
         mRecyclerView.smoothScrollToPosition(mPosition);
 
 
-
     }
 
 
@@ -169,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements
     {  // After a pause OR at startup
         super.onResume();
         mAdapter.notifyDataSetChanged();
+
         //Refresh your stuff here
     }
 

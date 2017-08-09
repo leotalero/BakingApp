@@ -43,7 +43,7 @@ public class SyncTask {
                 String jsonResponse = NetworkUtils.getResponseFromHttpUrl(weatherRequestUrl);
 
             /* Parse the JSON into a list of weather values */
-                ContentValues[] weatherValues = JsonUtils
+                ContentValues[] recipesValues = JsonUtils
                         .getContentValuesFromJson(context, jsonResponse);
 
             /*
@@ -52,7 +52,7 @@ public class SyncTask {
              * NullPointerExceptions being thrown. We also have no reason to insert fresh data if
              * there isn't any to insert.
              */
-                if (weatherValues != null && weatherValues.length != 0) {
+                if (recipesValues != null && recipesValues.length != 0) {
                 /* Get a handle on the ContentResolver to delete and insert data */
                     ContentResolver contentResolver = context.getContentResolver();
 
@@ -61,11 +61,10 @@ public class SyncTask {
                             BakingContract.BakingEntry.CONTENT_URI,
                             null,
                             null);
-
                 /* Insert our new weather data into Sunshine's ContentProvider */
                     int data = contentResolver.bulkInsert(
                             BakingContract.BakingEntry.CONTENT_URI,
-                            weatherValues);
+                            recipesValues);
 
                 /*
                  * Finally, after we insert data into the ContentProvider, determine whether or not
@@ -96,7 +95,7 @@ public class SyncTask {
                  */
 
                     if (notificationsEnabled) {
-                       // NotificationUtils.notifyUserOfNewData(context);
+                        NotificationUtils.notifyUserOfNewData(context);
                     }
 
 

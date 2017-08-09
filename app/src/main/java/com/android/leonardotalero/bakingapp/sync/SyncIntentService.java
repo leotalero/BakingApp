@@ -16,6 +16,8 @@ public class SyncIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         SyncTask.syncRecipes(this);
+
+
     }
 
 }

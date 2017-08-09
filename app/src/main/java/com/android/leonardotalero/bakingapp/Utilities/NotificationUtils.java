@@ -82,26 +82,21 @@ public class NotificationUtils {
          * empty, we want to show the notification.
          */
         if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
 
             /* Weather ID as returned by API, used to identify the icon to be used */
-            Long date = cursor.getLong(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_INGREDIENTS));
-            int recipeId = cursor.getInt(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_ID));
-            String recipeName = cursor.getString(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_NAME));
-            String ingredientes = cursor.getString(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_INGREDIENTS));
-            String steps = cursor.getString(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_STEPS));
+                Long date = cursor.getLong(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_INGREDIENTS));
+                int recipeId = cursor.getInt(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_ID));
+                String recipeName = cursor.getString(cursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_NAME));
 
+                Resources resources = context.getResources();
+                Bitmap largeIcon = BitmapFactory.decodeResource(
+                        resources,
+                        R.mipmap.ic_notification);
 
-            Resources resources = context.getResources();
-            //int largeArtResourceId = SunshineWeatherUtils
-            //        .getLargeArtResourceIdForWeatherCondition(recipeId);
+                String notificationTitle = context.getString(R.string.app_name);
 
-            Bitmap largeIcon = BitmapFactory.decodeResource(
-                    resources,
-                    R.mipmap.ic_notification);
-
-            String notificationTitle = context.getString(R.string.app_name);
-
-            String notificationText = getNotificationText(context, recipeId, recipeName);
+                String notificationText = getNotificationText(context, recipeId, recipeName);
 
             /* getSmallArtResourceIdForWeatherCondition returns the proper art to show given an ID */
             /*int smallArtResourceId = SunshineWeatherUtils
@@ -114,39 +109,41 @@ public class NotificationUtils {
              * finally the text of the notification, which in our case in a summary of today's
              * forecast.
              */
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                    .setColor(ContextCompat.getColor(context,R.color.colorPrimary))
-                    .setSmallIcon(R.mipmap.ic_notification)
-                    .setLargeIcon(largeIcon)
-                    .setContentTitle(notificationTitle)
-                    .setContentText(notificationText)
-                    .setAutoCancel(true);
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+                        .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                        .setSmallIcon(R.mipmap.ic_notification)
+                        .setLargeIcon(largeIcon)
+                        .setContentTitle(notificationTitle)
+                        .setContentText(notificationText)
+                        .setAutoCancel(true);
 
             /*
              * This Intent will be triggered when the user clicks the notification. In our case,
              * we want to open Sunshine to the DetailActivity to display the newly updated weather.
              */
-            Intent detailIntentForToday = new Intent(context, MainActivity.class);
-            detailIntentForToday.setData(dataUri);
+                Intent detailIntentForToday = new Intent(context, MainActivity.class);
+                detailIntentForToday.setData(dataUri);
 
-            TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
-            taskStackBuilder.addNextIntentWithParentStack(detailIntentForToday);
-            PendingIntent resultPendingIntent = taskStackBuilder
-                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
+                taskStackBuilder.addNextIntentWithParentStack(detailIntentForToday);
+                PendingIntent resultPendingIntent = taskStackBuilder
+                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            notificationBuilder.setContentIntent(resultPendingIntent);
+                notificationBuilder.setContentIntent(resultPendingIntent);
 
-            NotificationManager notificationManager = (NotificationManager)
-                    context.getSystemService(Context.NOTIFICATION_SERVICE);
-
+                NotificationManager notificationManager = (NotificationManager)
+                        context.getSystemService(Context.NOTIFICATION_SERVICE);
+                int idNotification= WEATHER_NOTIFICATION_ID+recipeId;
             /* WEATHER_NOTIFICATION_ID alrecipeImages you to update or cancel the notification later on */
-            notificationManager.notify(WEATHER_NOTIFICATION_ID, notificationBuilder.build());
+                notificationManager.notify(idNotification, notificationBuilder.build());
 
             /*
              * Since we just showed a notification, save the current time. That way, we can check
              * next time the weather is refreshed if we should show another notification.
              */
-            //SunshinePreferences.saveLastNotificationTime(context, System.currentTimeMillis());
+                //SunshinePreferences.saveLastNotificationTime(context, System.currentTimeMillis());
+                cursor.moveToNext();
+            }
         }
 
         /* Always close your cursor when you're done with it to avoid wasting resources. */
