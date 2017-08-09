@@ -1,8 +1,11 @@
 package com.android.leonardotalero.bakingapp;
 
 import org.junit.runner.RunWith;
+
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.widget.RecyclerView;
 
 import com.android.leonardotalero.bakingapp.data.BakingContract;
 
@@ -14,6 +17,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.CursorMatchers.withRowString;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
@@ -25,7 +29,7 @@ import static org.hamcrest.Matchers.anything;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityScreenTest {
 
-    public static final String NAME = "Nutella Pie";
+    public static final String NAME_RECIPE = "Nutella Pie";
 
     /**
      * The ActivityTestRule is a rule provided by Android used for functional testing of a single
@@ -37,21 +41,27 @@ public class MainActivityScreenTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
-    /**
-     * Clicks on a GridView item and checks it opens up the OrderActivity with the correct details.
-     */
+
     @Test
-    public void clickGridViewItem_OpensOrderActivity() {
+    public void testSample(){
+       // if (getRVcount() > 0){
+            onView(withId(R.id.my_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
-        // Uses {@link Espresso#onData(org.hamcrest.Matcher)} to get a reference to a specific
-        // gridview item and clicks it.
-       // onData(anything()).inAdapterView(withId(R.id.my_recycler_view)).atPosition(1).perform(click());
-        onData(withRowString(BakingContract.BakingEntry.COLUMN_RECIPE_NAME, NAME)).perform(click());
-        // Checks that the OrderActivity opens with the correct tea name displayed
-        onView(withId(R.id.title)).check(matches(withText(NAME)));
+         //   onView(withId(R.id.title)).check(matches(withText(NAME_RECIPE)));
+        // Check item at position 3 has "Some content"
+        onView(withId(R.id.my_recycler_view))
+                .perform(RecyclerViewActions.actionOnItem(
+                        hasDescendant(withText(NAME_RECIPE)), click()));
 
+        onView(withId(R.id.my_recycler_view))
+                .check(matches(hasDescendant(withText(NAME_RECIPE))));
 
     }
 
+   /* private int getRVcount(){
+        RecyclerView recyclerView = (RecyclerView) MainActivity.getActivity().findViewById(R.id.my_recycler_view);
+        return recyclerView.getAdapter().getItemCount();
+    }
+    */
 
 }

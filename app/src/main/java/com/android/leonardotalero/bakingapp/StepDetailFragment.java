@@ -153,7 +153,7 @@ public class StepDetailFragment extends Fragment  implements ExoPlayer.EventList
         View rootView = inflater.inflate(R.layout.step_detail_step, container, false);
 
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.playerView);
-        View exo_fullscreen_button=(View)rootView.findViewById(R.id.exo_fullscreen_button);
+        View exo_fullscreen_button= rootView.findViewById(R.id.exo_fullscreen_button);
 
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.textView_detail_step)).setText(mItem.sDescription);
