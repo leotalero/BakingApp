@@ -160,7 +160,7 @@ public class StepDetailFragment extends Fragment  implements ExoPlayer.EventList
             if(mItem.sVideoUrl.equals("") || mItem.sVideoUrl==null){
                 mPlayerView.setVisibility(View.GONE);
             }else{
-                initializeMediaSession();
+                //initializeMediaSession();
                 initializePlayer(Uri.parse(mItem.sVideoUrl));
             }
 
@@ -260,10 +260,6 @@ public class StepDetailFragment extends Fragment  implements ExoPlayer.EventList
 
 
 
-
-
-            //mExoPlayer.setPlayWhenReady(true);
-
         }
 
 
@@ -282,12 +278,18 @@ public class StepDetailFragment extends Fragment  implements ExoPlayer.EventList
 
         if (mExoPlayer != null) {
 
-            mNotificationManager.cancelAll();
+            if(mNotificationManager!=null){
+                mNotificationManager.cancelAll();
+            }
+            if(mMediaSession!=null){
+                mMediaSession.setActive(false);
+            }
+
             shouldAutoPlay = mExoPlayer.getPlayWhenReady();
             mExoPlayer.release();
             mExoPlayer = null;
             trackSelector = null;
-            mMediaSession.setActive(false);
+
         }
     }
 
@@ -316,7 +318,7 @@ public class StepDetailFragment extends Fragment  implements ExoPlayer.EventList
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
+       /* if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
             mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
                     mExoPlayer.getCurrentPosition(), 1f);
 
@@ -324,8 +326,10 @@ public class StepDetailFragment extends Fragment  implements ExoPlayer.EventList
             mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
                     mExoPlayer.getCurrentPosition(), 1f);
         }
+
         mMediaSession.setPlaybackState(mStateBuilder.build());
         showNotification(mStateBuilder.build());
+        */
 
     }
 
@@ -394,7 +398,7 @@ public class StepDetailFragment extends Fragment  implements ExoPlayer.EventList
                         (c, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS));
 
         PendingIntent contentPendingIntent = PendingIntent.getActivity
-                (c, 0, new Intent(c, StepDetailActivity.class), 0);
+                (c, 0, new Intent(c, VideoFullScreen.class), 0);
 
         builder.setContentTitle(getString(R.string.guess))
                 .setContentText(getString(R.string.notification_text))

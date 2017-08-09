@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.leonardotalero.bakingapp">
+    package="com.android.leonardotalero.bakingapp"
+    android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:fullBackupContent="true">
+        android:fullBackupContent="true"
+         >
         <activity
             android:name=".MainActivity"
             android:label="@string/title_recipe_Main"
@@ -63,6 +65,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.android.leonardotalero.bakingapp.StepDetailActivity" />
         </activity>
+        <receiver android:name=".VideoFullScreen$MediaReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
 
         <receiver android:name=".BakingAppWidget">
             <intent-filter>
@@ -78,6 +85,8 @@
         <service
             android:name=".GridWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <fragment></fragment>
     </application>
 
 </manifest>
