@@ -39,6 +39,8 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
+import com.veer.exvidplayer.Player.ExVidPlayer;
+import com.veer.exvidplayer.Player.ExVidPlayerListener;
 
 /**
  * Created by gtalero on 7/31/17.
@@ -48,6 +50,7 @@ public class VideoFullScreen extends AppCompatActivity implements ExoPlayer.Even
 
 
     private SimpleExoPlayer player;
+    private ExVidPlayer player1;
 
     private Uri mediaUri;
 
@@ -341,4 +344,47 @@ public class VideoFullScreen extends AppCompatActivity implements ExoPlayer.Even
         super.onBackPressed();
         releasePlayer();
     }
+
+
+
+
+
+    //define listener
+
+    ExVidPlayerListener mPlayerListener = new ExVidPlayerListener() {
+        @Override public void onError(String message) {
+
+        }
+
+        @Override public void onBufferingStarted() {
+
+        }
+
+        @Override public void onBuffering(String percentage) {
+
+        }
+
+        @Override public void onBufferingFinished() {
+
+        }
+
+        @Override public void onRendereingstarted() {
+
+        }
+
+        @Override public void onCompletion() {
+        }
+
+        @Override public void hideControls() {
+        }
+
+        @Override public void showControls() {
+
+        }
+
+        @Override public void onProgressChanged(int progress) {
+
+        }
+    };
+
 }

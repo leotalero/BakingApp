@@ -4,7 +4,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:id="@+id/itemwidget">
+    android:id="@+id/itemwidget"
+    android:background="@color/common_google_signin_btn_text_light_pressed">
 
     <ImageView
         android:id="@+id/result_icon"
@@ -21,7 +22,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignWithParentIfMissing="true"
         android:gravity="center_vertical"
-        android:text="" />
+        android:text=""
+        android:textColor="@android:color/white"/>
     <TextView
         android:id="@+id/in_quantity"
         android:layout_width="fill_parent"
@@ -32,6 +34,7 @@
         android:layout_alignWithParentIfMissing="true"
         android:gravity="center_vertical"
         android:text=""
+        android:textColor="@android:color/white"
         />
 
     <TextView
@@ -45,7 +48,8 @@
         android:ellipsize="marquee"
         android:singleLine="false"
         android:text=""
-        tools:text='Again, please remember to remove your API key before you submit through GitHub. Be sure to review it thoroughly before you submit. All criteria must "meet specifications" in order to pass.' />
+        android:textColor="@android:color/white"
+        tools:text='sample' />
 
 
 </RelativeLayout>

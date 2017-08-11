@@ -33,6 +33,9 @@ import com.android.leonardotalero.bakingapp.sync.SyncUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.android.leonardotalero.bakingapp.sync.SyncUtils.startImmediateSync;
 
 public class MainActivity extends AppCompatActivity implements
@@ -48,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements
     private RecyclerView.LayoutManager mLayoutManager;
     private int mPosition = RecyclerView.NO_POSITION;
     private boolean mTablet=false;
+    @BindView(R.id.linear_layout_tablet) View linearLayouTablet;
+
+
 
     private List<Recipe> mRecipe=new ArrayList<Recipe>();
 
@@ -75,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mLoadingIndicator=mBinding.pbLoadingIndicator;
         DebugDB.getAddressLog();
-
+        ButterKnife.bind(this);
         //mRecipe.add(new Recipe(1,"prueba",new ArrayList<Ingredient>(),new ArrayList<Step>(),"",""));
         showLoading();
         //load data in content provider
@@ -87,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
-        if(findViewById(R.id.linear_layout_tablet) != null){
+        if(linearLayouTablet != null){
             mTablet=true;
             mColumnCount=2;
 
